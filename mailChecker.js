@@ -31,7 +31,7 @@ if (popup) {
 }
 
 var nextEventNode = document.getElementsByClassName("_n_w1")[0];
-if (nextEventNode) {
+if (nextEventNode && !nextEventNode.getAttribute("style").includes("visibility: hidden")) {
 	result.nextEvent = nextEventNode.innerText;
 }
 

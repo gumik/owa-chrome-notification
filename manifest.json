@@ -16,6 +16,7 @@
   "permissions": [
     "tabs",
     "notifications",
-    "*://*.outlook.office.com/*"
+    "*://*.outlook.office.com/*",
+    "http://localhost/*"
   ]
 }
