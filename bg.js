@@ -42,7 +42,7 @@ function showNotification(notifications) {
 }
 
 function handleMailCheckerResult(results) {
-	if (results.length !== 0) {
+	if (results && results.length != 0 && results[0]) {
 
 		var result = results[0];
   		if (result.notifications) {
