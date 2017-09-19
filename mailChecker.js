@@ -31,8 +31,17 @@ if (popup) {
 }
 
 var nextEventNode = document.getElementsByClassName("_n_w1")[0];
-if (nextEventNode && !nextEventNode.getAttribute("style").includes("visibility: hidden")) {
-	result.nextEvent = nextEventNode.innerText;
+if (nextEventNode) {
+	nextEventParts = [];
+	var treeWalker = document.createTreeWalker(nextEventNode, NodeFilter.SHOW_TEXT, null, false);
+	while (treeWalker.nextNode()) {
+		var currentNode = treeWalker.currentNode;
+		var textContent = currentNode.textContent
+		if (currentNode.parentElement.offsetParent !== null && textContent.trim() != "") {
+			nextEventParts.push(treeWalker.currentNode.textContent);
+		}
+	}
+	result.nextEvent = nextEventParts.join(" ")
 }
 
 result;

@@ -8,10 +8,14 @@ function closeNotification(msg) {
 	chrome.notifications.clear(notificationId);
 }
 
-function sendEmptyEventData(msg) {
+function sendData(data) {
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://localhost:8000/set?key=owa&value=<" + msg + ">", true);
+	xhr.open("GET", "http://localhost:8000/set?key=owa&value=" + data, true);
 	xhr.send();
+}
+
+function sendEmptyEventData(msg) {
+	sendData("<" + msg + ">");
 }
 
 function showNotification(notifications) {
@@ -58,9 +62,7 @@ function handleMailCheckerResult(results) {
 		}
 
 		if (result.nextEvent) {
-			var xhr = new XMLHttpRequest();
-			xhr.open("GET", "http://localhost:8000/set?key=owa&value=" + result.nextEvent, true);
-			xhr.send();
+			sendData(result.nextEvent);
 		} else {
 			sendEmptyEventData("No next event data");
 		}
