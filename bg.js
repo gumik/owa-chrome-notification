@@ -9,9 +9,12 @@ function closeNotification(msg) {
 }
 
 function sendData(data) {
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "http://localhost:8000/set?key=owa&value=" + data, true);
-	xhr.send();
+	var http = new XMLHttpRequest();
+	var url = "http://localhost:8000/set";
+	var params = "key=owa&value=" + data;
+	http.open("POST", url, true);
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.send(params);
 }
 
 function sendEmptyEventData(msg) {
