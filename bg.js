@@ -11,7 +11,7 @@ function closeNotification(msg) {
 function sendData(data) {
 	var http = new XMLHttpRequest();
 	var url = "http://localhost:8000/set";
-	var params = "key=owa&value=" + data;
+	var params = "key=owa&value=" + encodeURIComponent(data);
 	http.open("POST", url, true);
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	http.send(params);
