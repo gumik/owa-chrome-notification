@@ -30,7 +30,7 @@ if (popup) {
 	}
 }
 
-var nextEventNode = document.getElementsByClassName("_n_w1")[0];
+var nextEventNode = document.getElementsByClassName("_n_x1")[0];
 if (nextEventNode) {
 	nextEventParts = [];
 	var treeWalker = document.createTreeWalker(nextEventNode, NodeFilter.SHOW_TEXT, null, false);
