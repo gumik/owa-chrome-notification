@@ -1,6 +1,7 @@
 
 var notificationId = "owa-reminder-notification";
 var reminder = false;
+var owaTab = null;
 
 function closeNotification(msg) {
 	document.body.innerText = msg;
@@ -19,6 +20,12 @@ function sendData(data) {
 
 function sendEmptyEventData(msg) {
 	sendData("<" + msg + ">");
+}
+
+function handleNotificationClick(id, buttonId) {
+	if (id == notificationId && owaTab) {
+		chrome.tabs.executeScript(owaTab, {"file": "closePopup.js"});
+	}
 }
 
 function showNotification(notifications) {
@@ -45,7 +52,8 @@ function showNotification(notifications) {
 	iconUrl: "icon.png",
 	title: title,
 	message: message,
-	requireInteraction: true};
+	requireInteraction: true,
+    buttons: [{title: "Dismiss"}]};
 
 	if (!reminder) {
 		chrome.notifications.create(notificationId, options);
@@ -77,8 +85,10 @@ function handleMailCheckerResult(results) {
 
 function handleTabsResult(tabs) {
 	if (tabs.length > 0) {
-		chrome.tabs.executeScript(tabs[0].id, {"file": "mailChecker.js"}, handleMailCheckerResult);
+		owaTab = tabs[0].id;
+		chrome.tabs.executeScript(owaTab, {"file": "mailChecker.js"}, handleMailCheckerResult);
 	} else {
+		owaTab = null;
 		closeNotification("No Outlook website open");
 		sendEmptyEventData("No Outlook website open");
 	}
@@ -88,4 +98,6 @@ function checkReminders() {
 	chrome.tabs.query({"url": "*://*.outlook.office.com/*"}, handleTabsResult);
 }
 
+// console.log("add notification");
+chrome.notifications.onClicked.addListener(handleNotificationClick);
 setInterval(checkReminders, 10000);
