@@ -1,9 +1,9 @@
-var popup = document.getElementsByClassName("o365cs-notifications-notificationPopupArea")[0];
+var buttons = document.getElementsByClassName("ms-Button-label label-43");
 
-if (popup) {
-    var dismissButton = popup.getElementsByClassName("o365cs-notifications-reminders-dismissAll")[0];
-
-    if (dismissButton) {
-        dismissButton.click()
+for (var i = 0; i < buttons.length; ++i) {
+    button = buttons[i];
+    if (button.innerText == "Dismiss all") {
+        // console.log("found button, clicking");
+        button.click();
     }
 }

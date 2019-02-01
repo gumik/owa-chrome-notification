@@ -1,33 +1,31 @@
 var result = new Object();
 
-var popup = document.getElementsByClassName("o365cs-notifications-notificationPopupArea")[0];
+var popup = document.getElementsByClassName("_3f4oNQyFnPLyIPvRZ8YOOA css-148")[0];
+// console.log("popup")
 // console.log(popup);
 if (popup) {
-	if (!popup.getAttribute("style").includes("display: none")) {
-		var list = popup.getElementsByClassName("o365cs-notifications-reminders-listPanel")[0];
-		var items = list.getElementsByClassName("o365cs-notifications-reminders-container");
-		var notifications = new Array();
+	// console.log("inside if(popup)")
+	var list = popup.getElementsByClassName("ms-FocusZone _14uhEaApptlZqDuQXtldnn")[0];
+	var items = list.getElementsByClassName("ms-FocusZone _1MUx-t9H6_UdrA7g3e67PP");
+	var notifications = new Array();
 
-		// console.log(items);
-		for (var i = 0; i < items.length; ++i) {
-			var item = items[i];
-			var title = item.getElementsByClassName("o365cs-notifications-reminders-title")[0].innerText;
-			var time = item.getElementsByClassName("o365cs-notifications-reminders-timeDuration")[0].innerText;
-			var timeToStart = item.getElementsByClassName("o365cs-notifications-toastReminders-timeToStartValue")[0].innerText
-							+ " "
-			                + item.getElementsByClassName("o365cs-notifications-reminders-timeToStartUnit")[0].innerText;
-			var overdue = !item.getElementsByClassName("o365cs-notifications-toastReminders-overdue")[0].getAttribute("style").includes("display: none");
+	console.log(items);
+	for (var i = 0; i < items.length; ++i) {
+		var item = items[i];
+		var title = item.getElementsByClassName("kH9ik7LgvqNProNCDbGXc")[0].innerText;
+		var time = item.getElementsByClassName("_1AyeoY-FsLZS-mbyeklU1N")[0].innerText;
+		var timeToStart = item.getElementsByClassName("_3D_9mD1E0PxVYYUhhmiADz")[0].innerText;
+		var place = item.getElementsByClassName("_6jukFT2JS2T2nVrY45vp7")[0].innerText;
 
-			var notification = new Object();
-			notification.title = title;
-			notification.time = time;
-			notification.timeToStart = timeToStart;
-			notification.overdue = overdue;
-			notifications.push(notification);
-		}
-
-		result.notifications = notifications;
+		var notification = new Object();
+		notification.title = title;
+		notification.time = time;
+		notification.timeToStart = timeToStart;
+		notification.overdue = false;
+		notifications.push(notification);
 	}
+
+	result.notifications = notifications;
 }
 
 var nextEventNode = document.getElementsByClassName("_n_x1")[0];
