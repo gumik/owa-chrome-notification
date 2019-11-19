@@ -28,18 +28,18 @@ if (popup) {
 	result.notifications = notifications;
 }
 
-var nextEventNode = document.getElementsByClassName("_n_x1")[0];
+var nextEventNode = document.evaluate('//*[@data-automation-id="UpNext"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 if (nextEventNode) {
 	nextEventParts = [];
 	var treeWalker = document.createTreeWalker(nextEventNode, NodeFilter.SHOW_TEXT, null, false);
 	while (treeWalker.nextNode()) {
 		var currentNode = treeWalker.currentNode;
 		var textContent = currentNode.textContent
-		if (currentNode.parentElement.offsetParent !== null && textContent.trim() != "") {
+		if (currentNode.parentElement.offsetParent !== null && textContent.trim().length > 1 ) {
 			nextEventParts.push(treeWalker.currentNode.textContent);
 		}
 	}
-	result.nextEvent = nextEventParts.join(" ")
+	result.nextEvent = nextEventParts.join(" - ")
 }
 
 result;
