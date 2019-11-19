@@ -1,34 +1,32 @@
 var result = new Object();
 
-var popup = document.getElementsByClassName("_3f4oNQyFnPLyIPvRZ8YOOA css-148")[0];
+var popups = document.evaluate('//*[@data-storybook="reminder"]', document, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+var popup = popups.iterateNext();
 // console.log("popup")
-// console.log(popup);
-if (popup) {
+
+var notifications = new Array();
+while (popup) {
 	// console.log("inside if(popup)")
-	var list = popup.getElementsByClassName("ms-FocusZone _14uhEaApptlZqDuQXtldnn")[0];
-	var items = list.getElementsByClassName("ms-FocusZone _1MUx-t9H6_UdrA7g3e67PP");
-	var notifications = new Array();
+	var title       = popup.childNodes[0].childNodes[1].childNodes[0].childNodes[0].textContent
+	var timeToStart = popup.childNodes[0].childNodes[1].childNodes[0].childNodes[1].textContent
+	var time        = popup.childNodes[0].childNodes[1].childNodes[1].childNodes[0].textContent
 
-	console.log(items);
-	for (var i = 0; i < items.length; ++i) {
-		var item = items[i];
-		var title = item.getElementsByClassName("kH9ik7LgvqNProNCDbGXc")[0].innerText;
-		var time = item.getElementsByClassName("_1AyeoY-FsLZS-mbyeklU1N")[0].innerText;
-		var timeToStart = item.getElementsByClassName("_3D_9mD1E0PxVYYUhhmiADz")[0].innerText;
-		var place = item.getElementsByClassName("_6jukFT2JS2T2nVrY45vp7")[0].innerText;
+	var notification = new Object();
+	notification.title = title;
+	notification.time = time;
+	notification.timeToStart = timeToStart;
+	notification.overdue = false;
+	notifications.push(notification);
 
-		var notification = new Object();
-		notification.title = title;
-		notification.time = time;
-		notification.timeToStart = timeToStart;
-		notification.overdue = false;
-		notifications.push(notification);
-	}
 
+	popup = popups.iterateNext()
+}
+
+if (notifications.length > 0) {
 	result.notifications = notifications;
 }
 
-var nextEventNode = document.evaluate('//*[@data-automation-id="UpNext"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+var nextEventNode = document.evaluate('//button[@data-automation-id="UpNext"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 if (nextEventNode) {
 	nextEventParts = [];
 	var treeWalker = document.createTreeWalker(nextEventNode, NodeFilter.SHOW_TEXT, null, false);

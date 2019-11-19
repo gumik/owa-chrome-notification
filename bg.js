@@ -53,7 +53,8 @@ function showNotification(notifications) {
 	title: title,
 	message: message,
 	requireInteraction: true,
-    buttons: [{title: "Dismiss"}]};
+    //buttons: [{title: "Dismiss"}]
+	};
 
 	if (!reminder) {
 		chrome.notifications.create(notificationId, options);
@@ -99,5 +100,5 @@ function checkReminders() {
 }
 
 // console.log("add notification");
-chrome.notifications.onClicked.addListener(handleNotificationClick);
+chrome.notifications.onButtonClicked.addListener(handleNotificationClick);
 setInterval(checkReminders, 10000);
