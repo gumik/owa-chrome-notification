@@ -81,7 +81,11 @@ function handleMailCheckerResult(results) {
 				if (name.length > 20) {
 					name = name.substr(0, 17) + "..."
 				}
-				nextEventsStr.push(name + " " + nextEvent.time);
+				var time = nextEvent.time;
+				if (time[time.length-1] == ",") {
+					time = time.substr(0, time.length-1);
+				}
+				nextEventsStr.push(name + " (" + time + ")");
 			}
 			sendData(nextEventsStr.join(" | "));
 		} else {
