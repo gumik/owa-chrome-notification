@@ -4,7 +4,7 @@ var reminder = false;
 var owaTab = null;
 
 function closeNotification(msg) {
-	document.body.innerText = msg;
+	// document.body.innerText = msg;
 	reminder = false;
 	chrome.notifications.clear(notificationId);
 }
@@ -29,7 +29,7 @@ function handleNotificationClick(id, buttonId) {
 }
 
 function showNotification(notifications) {
-	document.body.innerText = JSON.stringify(notifications);
+	// document.body.innerText = JSON.stringify(notifications);
 	var message = String();
 
 	notifications.forEach(function(notification) {
@@ -67,18 +67,28 @@ function handleMailCheckerResult(results) {
 	if (results && results.length != 0 && results[0]) {
 
 		var result = results[0];
+		document.body.innerText = result.debug.join("<br>\n");
 		if (result.notifications) {
 			showNotification(result.notifications);
 		} else {
 			closeNotification("No notifications");
 		}
 
-		if (result.nextEvent) {
-			sendData(result.nextEvent);
+		if (result.nextEvents) {
+			nextEventsStr = new Array();
+			for (let nextEvent of result.nextEvents) {
+				var name = nextEvent.name;
+				if (name.length > 20) {
+					name = name.substr(0, 17) + "..."
+				}
+				nextEventsStr.push(name + " " + nextEvent.time);
+			}
+			sendData(nextEventsStr.join(" | "));
 		} else {
 			sendEmptyEventData("No next event data");
 		}
 	} else {
+		document.body.innerText = "No response from executeScript";
 		closeNotification("No response from executeScript");
 		sendEmptyEventData("No response from executeScript");
 	}
@@ -87,16 +97,18 @@ function handleMailCheckerResult(results) {
 function handleTabsResult(tabs) {
 	if (tabs.length > 0) {
 		owaTab = tabs[0].id;
+		// document.body.innerText = owaTab.title;
 		chrome.tabs.executeScript(owaTab, {"file": "mailChecker.js"}, handleMailCheckerResult);
 	} else {
 		owaTab = null;
+		document.body.innerText = "No response from executeScript";
 		closeNotification("No Outlook website open");
 		sendEmptyEventData("No Outlook website open");
 	}
 }
 
 function checkReminders() {
-	chrome.tabs.query({"url": "*://*.outlook.office.com/*"}, handleTabsResult);
+	chrome.tabs.query({"url": "*://outlook.office.com/mail/*"}, handleTabsResult);
 }
 
 // console.log("add notification");
